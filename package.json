@@ -1,0 +1,20 @@
+{
+	"name": "xpm2png",
+	"description": "XMP to PNG conversion for Node.js",
+	"version": "1.0.0",
+	"author": "Gilbert Sinnott <g@sinnott.cc> (https://autr.tv)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/autr/xpm2png.git"
+	},
+	"keywords": [
+		"xpm",
+		"png",
+		"x pixmap",
+		"linux"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"jimp": "^0.16.1"
+	}
+}
