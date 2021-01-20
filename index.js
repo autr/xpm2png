@@ -51,32 +51,45 @@ module.exports = async function( url, debug ) {
 	for (let i = 0; i < j.length; i++) { 
 		const l = j[i]
 		const x = l.indexOf( 'c #')
-		if ( x != -1 && i <= config.colors  ) {
+		const none = l.toLowerCase().indexOf('none') != -1
+		if ( (x != -1 || none) && i <= config.colors  ) {
 			const k = l.substring(0, config.char)
 			let cc = ''
-			if (l.indexOf('none') != -1) {
+			if (none) {
 				cc = 'none'
 			} else {
 				const str = l.substring(x + 3)	
 				cc = (str.length > 6) ? '#'+l[5]+l[6]+l[9]+l[10]+l[13]+l[14] : '#' + str
 			}
 			colors[k] = cc
-			if (debug) console.log('[xpm.js] added colour:', k, cc)
-		} else if ( i > config.colors ) {
+		}
+	}
+	if (debug) console.log(`[xpm.js] total colours added: ${Object.keys(colors).length}`)
+
+	for (let i = 0; i < j.length; i++) { 
+
+		const l = j[i]
+	 	if ( i > config.colors ) {
 			for (let ii = 0; ii < l.length; ii += config.char ) {
+
 				const char = l.substring( ii, ii + config.char )
 				const c = colors[char]
-				if ( c == 'none' ) {
-					data[idx++] = 255
-					data[idx++] = 255
-					data[idx++] = 255
-					data[idx++] = 0
-				} else {
-					const rgb = hexToRgb( c )
-					data[idx++] = rgb.r
-					data[idx++] = rgb.g
-					data[idx++] = rgb.b
-					data[idx++] = 255
+				try {
+					if ( c == 'none' ) {
+						data[idx++] = 255
+						data[idx++] = 255
+						data[idx++] = 255
+						data[idx++] = 0
+					} else {
+						const rgb = hexToRgb( c )
+						data[idx++] = rgb.r
+						data[idx++] = rgb.g
+						data[idx++] = rgb.b
+						data[idx++] = 255
+					}
+				} catch(err) {
+					console.log(`[xpm.js] ❌  error parsing line: ${i} "${err.message}"`)
+					console.log(`[xpm.js] -> "${l}"  `)
 				}
 
 			}
